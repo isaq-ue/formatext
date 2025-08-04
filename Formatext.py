@@ -5,24 +5,31 @@ import streamlit.components.v1 as components
 st.set_page_config(page_title="List to Text Formatter", page_icon="📝", layout="centered")
 
 st.title("📝 List to Text Formatter")
-st.write("Paste your list below (one item per line). The app will merge them into a single line separated by ` | `.")
+st.write("Paste your list below (one item per line). The app will merge them into a single line separated by `| `.")
 
-# Input area
-user_input = st.text_area("Your list:", height=200, placeholder="1. First item\n2. Second item\n3. Third item")
+# Wrap input in a form so mobile users have a Send button
+with st.form(key="input_form"):
+    user_input = st.text_area(
+        "Your list:",
+        height=200,
+        placeholder="1. First item\n2. Second item\n3. Third item"
+    )
+    submit_button = st.form_submit_button(label="📤 Send")
 
-if user_input.strip():
-    # Clean numbering/bullets
+# Process only after pressing Send
+if submit_button and user_input.strip():
+    # Remove numbering/bullets from each line
     lines = [re.sub(r"^[\d\.\-\)\s\t]+", "", line).strip()
              for line in user_input.strip().split("\n")
              if line.strip()]
 
-    # Join into a single line
+    # Join into a single line with | separator
     formatted_text = " | ".join(lines)
 
     st.subheader("Formatted Output")
     st.code(formatted_text, language="text")
 
-    # HTML + JS button (runs inside iframe so it works reliably)
+    # Copy-to-clipboard button using components.html
     components.html(
         f"""
         <button id="copyButton" style="
