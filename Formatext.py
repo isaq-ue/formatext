@@ -4,7 +4,7 @@ import streamlit.components.v1 as components
 
 st.set_page_config(page_title="List to Text Formatter", page_icon="📝", layout="centered")
 
-st.title("📝 List to Text Formatter")
+st.title("📝 Formatext")
 st.write("Paste your list below (one item per line). The app will merge them into a single line separated by `| `.")
 
 # Wrap input in a form so mobile users have a Send button
@@ -57,3 +57,4 @@ if submit_button and user_input.strip():
         """,
         height=80,
     )
+
